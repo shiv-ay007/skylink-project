@@ -23,6 +23,7 @@ if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 app.use('/uploads', express.static(path.resolve('uploads'), { maxAge: '1d' }));
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 25, standardHeaders: 'draft-7', legacyHeaders: false });
 const publicWriteLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 30, standardHeaders: 'draft-7', legacyHeaders: false });
+app.get('/', (_req, res) => res.json({ success: true, message: 'SkyLink API is running successfully' }));
 app.get('/api/health', (_req, res) => res.json({ success: true, status: 'ok' }));
 app.use('/api/auth', authLimiter, authRoutes); 
 app.use('/api/public', (req, res, next) => ['POST', 'PATCH'].includes(req.method) ? publicWriteLimiter(req, res, next) : next(), publicRoutes);

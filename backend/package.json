@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
+    "build": "echo 'No build step required'",
     "start": "node app.js",
     "seed:site": "node src/scripts/seedSite.js",
     "check": "node --check app.js"
