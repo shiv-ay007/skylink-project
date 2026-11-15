@@ -16,8 +16,24 @@ for (const key of required) { if (!process.env[key] || process.env[key].startsWi
 if (process.env.JWT_SECRET.length < 32 || process.env.ADMIN_SETUP_KEY.length < 16) throw new Error('Use JWT_SECRET >=32 chars and ADMIN_SETUP_KEY >=16 chars');
 const app = express(); app.disable('x-powered-by'); app.set('trust proxy', 1);
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } })); app.use(compression());
-const allowed = [process.env.CLIENT_URL, process.env.ADMIN_URL].filter(Boolean);
-app.use(cors({ origin(origin, cb) { if (!origin || allowed.includes(origin)) return cb(null, true); return cb(new Error('Origin not allowed by CORS')); } }));
+const allowed = [
+  process.env.CLIENT_URL,
+  process.env.ADMIN_URL,
+  'https://skylink-project-1.onrender.com',
+  'https://skylink-admin-pannel.onrender.com',
+  'http://localhost:5173',
+  'http://localhost:5174'
+].filter(Boolean).map(u => u.replace(/\/+$/, ''));
+
+app.use(cors({
+  origin(origin, cb) {
+    if (!origin) return cb(null, true);
+    const cleanOrigin = origin.replace(/\/+$/, '');
+    if (allowed.includes(cleanOrigin)) return cb(null, true);
+    return cb(new Error(`Origin ${origin} not allowed by CORS`));
+  },
+  credentials: true
+}));
 app.use(express.json({ limit: '500kb' })); app.use(express.urlencoded({ extended: false }));
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 app.use('/uploads', express.static(path.resolve('uploads'), { maxAge: '1d' }));
