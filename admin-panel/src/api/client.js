@@ -1,5 +1,12 @@
 import axios from 'axios';
-const api=axios.create({baseURL:import.meta.env.VITE_API_URL||'http://localhost:5000/api',timeout:20000});
+const defaultApiUrl = typeof window !== 'undefined' && !['localhost', '127.0.0.1'].includes(window.location.hostname)
+  ? 'https://skylink-project.onrender.com/api'
+  : 'http://localhost:5000/api';
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || defaultApiUrl,
+  timeout: 60000
+});
 api.interceptors.request.use(config=>{const token=localStorage.getItem('skylink_admin_token');if(token)config.headers.Authorization=`Bearer ${token}`;return config;});
 api.interceptors.response.use(r=>r,e=>{if(e.response?.status===401&&localStorage.getItem('skylink_admin_token')){localStorage.removeItem('skylink_admin_token');localStorage.removeItem('skylink_admin_user');window.dispatchEvent(new Event('skylink-admin-logout'));}return Promise.reject(e);});
 export const getError=e=>e.response?.data?.message||e.message||'An unexpected error occurred';
