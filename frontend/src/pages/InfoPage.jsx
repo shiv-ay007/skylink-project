@@ -1,0 +1,3 @@
+import PageTitle from '../components/PageTitle';import {useSite} from '../context/SiteContext';import {Link} from 'react-router-dom';
+const info={about:['About Us','aboutContent'],faq:['Frequently Asked Questions','faqContent'],terms:['Terms & Conditions','termsContent'],privacy:['Privacy Policy','privacyContent'],careers:['Careers','careersContent']};
+export default function InfoPage({type}){const {site}=useSite();const [title,field]=info[type];return <><PageTitle title={title}/><div className="container-main py-16"><div className="mx-auto max-w-4xl whitespace-pre-line leading-9 text-slate-700">{site?.[field]||<>This page has not been configured. <Link className="text-primary" to="/contact">Contact our team</Link> for more information.</>}</div></div></>}

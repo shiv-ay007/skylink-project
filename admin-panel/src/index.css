@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@tailwind base;@tailwind components;@tailwind utilities;
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;color:#252735;background:#f7f8fb}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
+@layer components{
+ .primary-btn{@apply inline-flex items-center justify-center gap-2 rounded-md bg-[#3b82f6] px-5 py-2.5 font-medium text-white transition hover:bg-blue-600 disabled:opacity-50;}
+ .outline-btn{@apply inline-flex items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2.5 text-slate-600 hover:border-blue-400;}
+ .field{@apply w-full rounded-md border border-slate-200 bg-white px-3 py-2.5 outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100;}
+ .label-field{@apply mb-1.5 block text-sm font-medium text-slate-600;}
+ .panel{@apply rounded-xl border border-slate-100 bg-white shadow-sm;}
+}

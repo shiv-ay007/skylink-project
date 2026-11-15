@@ -1,0 +1,30 @@
+### SkyLink API examples (VS Code REST Client format)
+@base = http://localhost:5000/api
+
+### Health
+GET {{base}}/health
+
+### Customer register
+POST {{base}}/auth/register
+Content-Type: application/json
+
+{"name":"Customer Name","email":"customer@example.com","password":"replace-me-123"}
+
+### Login
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{"email":"customer@example.com","password":"replace-me-123"}
+
+### Public tracking (returns no data until a real shipment is created in MongoDB)
+GET {{base}}/public/track?numbers=YOUR-TRACKING-ID
+
+### Public schedules
+GET {{base}}/public/schedules?page=1&limit=10
+
+### Published news
+GET {{base}}/public/news?page=1&limit=10
+
+### Admin list shipments – replace JWT
+GET {{base}}/admin/shipments?page=1&limit=10&search=&status=BOOKED
+Authorization: Bearer <ADMIN_JWT>

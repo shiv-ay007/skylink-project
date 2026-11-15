@@ -1,0 +1,13 @@
+import {Router} from 'express';
+import {publicSettings,trackShipment,publicSchedules,publicPorts,publicNews,newsDetail,createQuote,createMessage,myBookings,createBooking,cancelBooking} from '../controllers/publicController.js';
+import {protect} from '../middleware/auth.js';
+import {validate,schemas} from '../middleware/validate.js';
+const router=Router();
+router.get('/settings',publicSettings);router.get('/track',trackShipment);
+router.get('/schedules',publicSchedules);router.get('/ports',publicPorts);
+router.get('/news',publicNews);router.get('/news/:slug',newsDetail);
+router.post('/quotes',validate(schemas.quote),createQuote);router.post('/messages',validate(schemas.contact),createMessage);
+router.get('/my-bookings',protect,myBookings);
+router.post('/bookings',protect,validate(schemas.booking),createBooking);
+router.patch('/bookings/:id/cancel',protect,cancelBooking);
+export default router;

@@ -1,0 +1,1 @@
+export default function PageTitle({title,subtitle}){return <div className="bg-slate-50 border-b py-14"><div className="container-main"><h1 className="page-heading">{title}</h1>{subtitle&&<p className="mt-3 text-slate-500">{subtitle}</p>}</div></div>}

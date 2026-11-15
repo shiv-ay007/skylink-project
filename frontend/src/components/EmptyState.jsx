@@ -1,0 +1,1 @@
+export default function EmptyState({title='No records found',description=''}){return <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-10 text-center text-slate-500"><p className="font-semibold text-slate-700">{title}</p>{description&&<p className="mt-2 text-sm">{description}</p>}</div>;}

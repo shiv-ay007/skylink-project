@@ -1,0 +1,13 @@
+import {useState} from 'react';import {Link,NavLink} from 'react-router-dom';import {ChevronDown,Menu,X,UserRound} from 'lucide-react';import {useSite} from '../context/SiteContext';import {useAuth} from '../context/AuthContext';
+const nav=[['/','Home'],['/schedule','Schedule'],['/tracking','Tracking'],['/news','News'],['/contact','Contact']];
+export default function Header(){const [open,setOpen]=useState(false);const {site}=useSite();const {user}=useAuth();const logo=site?.logoUrl||'/skylink-logo.png';const brand=site?.companyName||'SkyLink';
+ return <header className="sticky top-0 z-30 border-b bg-white/95 backdrop-blur shadow-sm"><div className="container-main flex h-[84px] items-center justify-between gap-5">
+ <Link to="/" className="flex items-center" onClick={()=>setOpen(false)}><img src={logo} alt={`${brand} Logistics`} className="w-[104px] h-[66px] object-contain" onError={e=>{e.currentTarget.style.display='none';}}/><span className="sr-only">{brand}</span></Link>
+ <nav className="hidden lg:flex items-center gap-2 text-[17px] font-medium text-slate-600"><NavLink to="/" end className={({isActive})=>`rounded-lg px-4 py-3 ${isActive?'bg-blue-50 text-primary':'hover:text-primary'}`}>Home</NavLink>
+ <div className="group relative"><Link to="/services" className="flex items-center gap-1 px-3 py-3 hover:text-primary">Services <ChevronDown size={17}/></Link><div className="invisible absolute top-11 left-0 min-w-52 rounded-lg bg-white p-2 opacity-0 shadow-lg border transition group-hover:visible group-hover:opacity-100"><Link className="block rounded p-2 hover:bg-blue-50" to="/services">All Services</Link>{(site?.services||[]).map((s,i)=><Link key={i} className="block rounded p-2 hover:bg-blue-50" to={`/services/${s.slug||i}`}>{s.title}</Link>)}</div></div>
+ {nav.slice(1).map(([url,label])=><NavLink key={url} to={url} className={({isActive})=>`rounded-lg px-4 py-3 ${isActive?'bg-blue-50 text-primary':'hover:text-primary'}`}>{label}</NavLink>)}
+ </nav><div className="hidden lg:block"><Link to={user?'/account':'/login'} className="btn-blue px-7">{user?<><UserRound size={17}/>Account</>:'Login'}</Link></div>
+ <button onClick={()=>setOpen(!open)} className="lg:hidden rounded-lg p-2 text-slate-700" aria-label="Toggle navigation">{open?<X/>:<Menu/>}</button></div>
+ {open&&<div className="lg:hidden border-t bg-white px-6 pb-5">{[['/','Home'],['/services','Services'],...nav.slice(1),['/offices','Offices'],['/quote','ONE QUOTE'],[user?'/account':'/login',user?'Account':'Login']].map(([url,label])=><Link key={url} to={url} onClick={()=>setOpen(false)} className="block border-b py-3 font-medium text-slate-600">{label}</Link>)}</div>}
+ </header>;
+}
